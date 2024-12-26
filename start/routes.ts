@@ -32,6 +32,10 @@ router.put('/api/slogan_vote', [AppsController, 'sloganVote']).use(middleware.au
     guards: ['web', 'api']
 }))
 
+router.get('/invite', [AppsController, 'getQuest'])
+router.get('/quests', [AppsController, 'getGuests'])
+router.put('/api/guest_enter', [AppsController, 'guest_enter'])
+
 
 router.get('/uploads/*', ({ request, response }) => {
     const filePath = request.param('*').join(sep)

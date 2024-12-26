@@ -8,6 +8,8 @@ import { LoginValidate } from '#validators/login';
 import User from '#models/user';
 import hash from '@adonisjs/core/services/hash';
 import Mvote from '#models/mvote';
+import Mguest from '#models/mguest';
+import MguestGroup from '#models/mguestgroup';
 // const subscription = Trams.subscription('cvote')
 export default class AppsController {
     async pageLogin({ inertia }: HttpContext) {
@@ -115,6 +117,32 @@ export default class AppsController {
     }
     async uploadfile({ request, auth, inertia }: HttpContext) {
         return inertia.render('fileupload')
+    }
+
+
+    async getQuest({ inertia }: HttpContext) {
+        return inertia.render('invite', { data: '' })
+    }
+
+    async getGuests({ request, inertia }: HttpContext) {
+        const { q } = request.all()
+        let rs
+        if (q && q != '') {
+            rs = await Mguest.query().preload('orgs').where('fullname', 'like', `%${q}%`)
+        } else {
+            rs = await Mguest.query().preload('orgs')
+        }
+        const rsg = await MguestGroup.query()
+
+        return inertia.render('quests', { data: rs, datGroup: rsg })
+    }
+
+    async guest_enter({ request, response }: HttpContext) {
+        const { id, enter } = request.all()
+        const g = await Mguest.findOrFail(id)
+        g.enter = enter
+        g.save()
+        return response.redirect('/quests?q=')
     }
 
 }
