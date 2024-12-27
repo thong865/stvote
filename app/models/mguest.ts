@@ -28,6 +28,8 @@ export default class Mguest extends BaseModel {
 
   @column()
   declare enter: Boolean
+  @column()
+  declare kcf: string
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

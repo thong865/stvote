@@ -17,9 +17,9 @@ const props = defineProps<{
         Your browser does not support the video tag.
       </video>
       <div class="absolute h-screen w-screen">
-        <div class="text-4xl text-center pt-5 absolute z-10 w-full">Chirstmas</div>
+        <div class="text-4xl text-center pt-5 absolute z-10 w-full text-white">Chirstmas PhotoGroup</div>
         <Swipimg :itm="data" v-model:curactive="itActive" />
-        <Movoate :data="itActive" v-model:setpoint="votePoint" />
+        <Movoate :data="itActive" :udata="data" v-model:setpoint="votePoint" />
       </div>
     </div>
   </div>

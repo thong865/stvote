@@ -7,8 +7,8 @@ import type { DefineComponent } from 'vue'
 import DefaultLayout from '~/layouts/default.vue';
 import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
-const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
-
+const appName = import.meta.env.VITE_APP_NAME || ''
+import JsonExcel from "vue-json-excel3";
 createInertiaApp({
   progress: { color: '#5468FF' },
 
@@ -28,6 +28,7 @@ createInertiaApp({
 
     createSSRApp({ render: () => h(App, props) })
       .use(plugin)
+      .component('downloadExcel',JsonExcel)
       .mount(el)
   },
 })

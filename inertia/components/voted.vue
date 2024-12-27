@@ -16,7 +16,7 @@
       </svg>
     </div>
     <div class="text-2xl text-primary text-center mt-4">ທ່ານໄດ້ໂຫວດແລ້ວ ດ້ວຍຄະແນນ</div>
-    <div class="text-5xl text-error text-center">{{ props.data?.votes[0]?.vote || 0 }}</div>
+    <div class="text-5xl text-error text-center" v-if="props.data?.votes">{{ props.data?.votes[0]?.vote || 0 }}</div>
   </div>
 </template>
 

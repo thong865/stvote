@@ -53,7 +53,7 @@ export default class AppsController {
         let uaut = auth?.user.uid
         const rs = await Mvote.create({ img_name: iid, whovote: uaut, vote: vote })
         transmit.broadcast('cvote', { fid: rs })
-        return response.redirect().back()
+        return response.status(200).json(rs)
     }
     async vlist({ request, auth, inertia }: HttpContext) {
 
@@ -124,6 +124,19 @@ export default class AppsController {
         return inertia.render('invite', { data: '' })
     }
 
+    
+    async questsTable({ request, inertia }: HttpContext) {
+        const { q } = request.all()
+        let rs
+        if (q && q != '') {
+            rs = await Mguest.query().preload('orgs').where('fullname', 'like', `%${q}%`)
+        } else {
+            rs = await Mguest.query().preload('orgs')
+        }
+        const rsg = await MguestGroup.query()
+
+        return inertia.render('questsTable', { data: rs, datGroup: rsg })
+    }
     async getGuests({ request, inertia }: HttpContext) {
         const { q } = request.all()
         let rs
@@ -138,11 +151,26 @@ export default class AppsController {
     }
 
     async guest_enter({ request, response }: HttpContext) {
-        const { id, enter } = request.all()
+        // console.log(localStorage.getItem('KCER'))
+        const { id, enter, cv } = request.all()
         const g = await Mguest.findOrFail(id)
-        g.enter = enter
-        g.save()
-        return response.redirect('/quests?q=')
+        const cf = await Mguest.query().where('kcf', cv).first()
+        // console.log(cf)
+        if (!cf) {
+            g.enter = enter
+            g.kcf = cv
+            g.save()
+            return response.status(200).json({ success: true })
+        }
+        return response.status(201).json({ success: false,enter })
+
+    }
+
+    async guest_leave({ request, response }: HttpContext) {
+        // console.log(localStorage.getItem('KCER'))
+        const { id, enter } = request.all()
+        await Mguest.query().where('id',id).update({enter:enter})
+        return response.redirect().back()
     }
 
 }

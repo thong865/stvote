@@ -6,6 +6,10 @@ export default {
   ],
   theme: {
     extend: {},
+    fontFamily: {
+      sans: ['Noto Sans Lao', 'sans-serif'],
+      serif: ['Noto Sans Lao', 'serif'],
+    },
   },
   plugins: [require('daisyui')],
 }

@@ -16,7 +16,7 @@ import router from '@adonisjs/core/services/router'
 const PATH_TRAVERSAL_REGEX = /(?:^|[\\/])\.\.(?:[\\/]|$)/
 
 transmit.registerRoutes()
-router.get('/', [AppsController, 'dashboard'])
+router.get('/dashboard', [AppsController, 'dashboard'])
 router.get('/list', [AppsController, 'vlist'])
 router.get('/login', [AppsController, 'pageLogin'])
 router.post('/login', [AppsController, 'login'])
@@ -33,8 +33,11 @@ router.put('/api/slogan_vote', [AppsController, 'sloganVote']).use(middleware.au
 }))
 
 router.get('/invite', [AppsController, 'getQuest'])
+router.get('/', [AppsController, 'getGuests'])
 router.get('/quests', [AppsController, 'getGuests'])
-router.put('/api/guest_enter', [AppsController, 'guest_enter'])
+router.get('/questsTable', [AppsController, 'questsTable'])
+router.post('/api/guest_enter', [AppsController, 'guest_enter'])
+router.post('/api/guest_leave', [AppsController, 'guest_leave'])
 
 
 router.get('/uploads/*', ({ request, response }) => {

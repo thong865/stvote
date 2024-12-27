@@ -1,6 +1,6 @@
 <script setup>
 import { watchEffect, ref, watch, onMounted, reactive, computed } from 'vue'
-import { router,Head } from '@inertiajs/vue3'
+import { router, Head } from '@inertiajs/vue3'
 import { useLocalStorage } from '@vueuse/core'
 import Menthanks from '~/components/menthanks.vue'
 import Carditem from '~/components/carditem.vue'
@@ -16,19 +16,22 @@ const itup = ref()
 const seltem = ref()
 let datg = reactive(computed(() => props.data))
 const handleChange = async (t) => {
-  
-    const res = await axios.post('/api/guest_enter', { id: t.id, enter: t.enter, cv:cv.value}, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  
-  if(res.status == 200){
+  const res = await axios.post(
+    '/api/guest_enter',
+    { id: t.id, enter: t.enter, cv: cv.value },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+
+  if (res.status == 200) {
     itup.value = res.data
     const el = document.getElementById('my_modal_4')
     el?.show()
   }
-  if(res.status == 201){
+  if (res.status == 201) {
     itup.value = res.data
     seltem.value = t
     const el = document.getElementById('my_modal_4')
@@ -42,15 +45,11 @@ watch(search, () => {
 
 <template>
   <div>
-    <Head title="Guests"/>
+    <Head title="Guests" />
     <div>
       <h1 class="text-center text-2xl">ລົງທະບຽນຮ່ວມງານ</h1>
     </div>
     <div class="flex">
-      <!-- <select class="select select-ghost w-full max-w-xs" v-model="sorce">
-        <option selected value="0">ທັງໝົດ</option>
-        <option :value="t?.id" v-for="(t, i) in datg" :key="i">{{ t?.orgName }}</option>
-      </select> -->
       <label class="input input-bordered flex items-center gap-2">
         <input type="text" v-model="search" class="grow" placeholder="ຄົ້ນຫາຕາມຊື່ ແລະ ນາມສະກຸນ" />
         <svg
@@ -67,28 +66,31 @@ watch(search, () => {
         </svg>
       </label>
     </div>
-    <div
-      class="flex justify-between items-center gap-3 bg-white mt-1 py-2 px-4 rounded-xl"
-      v-for="(t, i) in datg"
-      :key="i"
-    >
-      <div>
-        <div class="font-bold">{{ t.fullname }}</div>
-        <div class="text-sm opacity-50" v-text="t?.orgs?.orgName"></div>
-      
-        <!-- <Carditem :org="t.orgs?.orgName"/> -->
-      </div>
-      <div class="form-control">
-        <label class="label cursor-pointer">
-          <input
-            type="checkbox"
-            class="toggle toggle-accent"
-            @change="handleChange(t)"
-            v-model="t.enter"
-          />
-        </label>
-      </div>
+    <div class="overflow-x-auto">
+      <table class="table table-xs">
+        <thead>
+          <tr>
+            <th>ຄຳນຳໜ້າ ຊື່ ນາມສະກຸນ</th>
+            <th>ໜ້າທີ່ຮັບຜິດຊອບ</th>
+            <th>ພາກສ່ວນ</th>
+            <th>ບ່ອນປະຈຳການ</th>
+            <th>ຝ່າຍ</th>
+            <th>ໜ່ວຍງານ / ໜ່ວຍບໍລິການ</th>
+            <th>ສະຖານະ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(t,i) in data" :key="i">
+            <th>{{t.fullname}}</th>
+            <td>{{t.jobdesc}}</td>
+            <td>{{t.orgName}}</td>
+            <td>{{t.jobdesc}}</td>
+            <td>{{t.jobdesc}}</td>
+            <td>{{t.jobdesc}}</td>
+            <td>{{t.jobdesc}}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <Menthanks :data="itup" :t="seltem" />
   </div>
 </template>
